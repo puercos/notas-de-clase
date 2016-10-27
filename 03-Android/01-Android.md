@@ -132,7 +132,10 @@ Un Intent es un objeto utilizado para enviar mensajes entre componentes Android,
 Existen tres casos de uso principales para un intent:
 
 1. **Iniciar una activity.** Una activity representa una pantalla en una aplicación. Se puede iniciar una activity enviando un Intent al método ```startActivity()```
+
 2. **Iniciar un servicio.** Un servicio es un componente que ejecuta operaciones sin una interfaz de usuario. Se puede iniciar un servicio para efectuar una operación que se ejecute una única vez (como descargar un archivo) enviando un Intent al método ```startService()```
+
+3. **Enviar un mensaje broadcast.** Un broadcast es un mensaje que cualquier aplicación puede recibir. El sistema broadcasts variados notificar sobre eventos del sistema, como puede ser el inicio del sistema o que el dispositivo comienza a cargar su batería. Se pueden enviar un broadcast a otras aplicaciones pasando un Intent a los métodos ```sendBroadcast()```, ```sendOrderedBroadcast()``` o ``` sendStickyBroadcast()```.
 
 ### Android manifest
 
