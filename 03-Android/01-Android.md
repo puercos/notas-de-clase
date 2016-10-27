@@ -137,9 +137,16 @@ Existen tres casos de uso principales para un intent:
 
 3. **Enviar un mensaje broadcast.** Un broadcast es un mensaje que cualquier aplicación puede recibir. El sistema broadcasts variados notificar sobre eventos del sistema, como puede ser el inicio del sistema o que el dispositivo comienza a cargar su batería. Se pueden enviar un broadcast a otras aplicaciones pasando un Intent a los métodos ```sendBroadcast()```, ```sendOrderedBroadcast()``` o ``` sendStickyBroadcast()```.
 
+Los intents pueden ser de dos tipos:
+
+1. **Explícitos.** Un intent explícito especifican los componentes por su nombre completo. Se utilizan para iniciar un componente en la misma aplicación donde se crea el intent, porque se conoce el nombre de la clase del componente que se quiere iniciar.
+
+2. **Implícitos.** Un intent implícito no nombra un componente específico sino que en cambio declaran una acción general a realizar, lo que permite a un componente de otra aplicación, manejarlo.
+
 ### Android manifest
 
 El AndroidManifest es un archivo XML de configuración, cuyo objetivo principal es declarar los componentes al sistema Android.
+
 Dentro de un AndroidManifest pueden incluirse también los permisos para utilizar la cámara, acceder a los contactos del dispositivo, etc.
 
 ```xml
@@ -156,7 +163,21 @@ Dentro de un AndroidManifest pueden incluirse también los permisos para utiliza
 </manifest>
 ```
 
-**ACA FALTA EXPLICAR intent-filter**
+Dentro del manifest se pueden declarar las acciones que van a manejar los intents implícitos. Es necesario declarar cuáles van a ser los intents implícitos que se van a recibir.
+
+Para cada intent implícito se debe utilizar una etiqueta ```<intent-filter>```, que indica cuales son los intents implícitos que la aplicación permite recibir.
+
+Por ejemplo:
+
+```xml
+<activity android:name="ShareActivity">
+    <intent-filter>
+        <action android:name="android.intent.action.SEND"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <data android:mimeType="text/plain"/>
+    </intent-filter>
+</activity>
+```
 
 ### Vistas
 
@@ -182,8 +203,30 @@ Si clasificamos a los sensores por su funcionalidad, podemos dividirlos en:
 
 Es importante notar que no todos los sensores están disponibles en todos los dispositivos.
 
+## Sistemas de coordenadas en sensores
+
+![Sistemas de coordenadas en sensores](../assets/android-002.png)
+
+En general, el framework de los sensores, utiliza un sistema de coordenadas estándar, de 3 ejes, para expresar los valores capturados. 
+
+Para la mayoría de los dispositivos, el sistema de coordenadas, es definido relativo a la posición de la pantalla cuando el dispositivo es sostenido en la posición por defecto 
+
 ## Escuchando sensores
 
+Para recibir notificaciones de eventos ocurridos, se debe implementar la interfaz ```SensorEventListener```.
 
+La interfaz SensorEventListener define dos métodos que deben ser implementados. 
+
+Para detectar cambios de precisión en un sensor en tiempo real, se debe implementar el método ```onAccuracyChanged()```, que recibe dos parámetros:
+
+1. Referencia al sensor
+2. Nuevo valor para el cambio de precisión
+
+Para recibir un nuevo valor medido por el sensor, se debe implementar ```onSensorChanged()```, que recibe los siguientes parametros:
+
+1. Precisión de la medición
+2. Sensor que detectó el cambio
+3. Marca de tiempo del evento
+4. Datos de la medición.
 
 ## <a name="#AndroidStudioVSEclipse"></a>Android Studio vs eclipse
