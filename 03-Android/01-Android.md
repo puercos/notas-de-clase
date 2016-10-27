@@ -30,7 +30,7 @@ Cada aplicación en Android mantiene su propio proceso y puede tener multiples t
 
 El ciclo de vida de una aplicación en Android es un tema muy bien explicado por Google en su [documentación](https://developer.android.com/training/basics/activity-lifecycle/index.html). Lo que quiere decir este diagrama es que una aplicación en Android es manejada por una máquina de estados con funciones que se ejecutan en cada transición de estados. 
 
-Cada estado está representado por una burbuja (Created, Started, Resumed, Paused y Stopped) y cada transición entre estados está representada por una flecha entre las burbujas (onCreate(), onStart(), onResume(), onRestart(), onPause(), onStop() y onDestroy())
+Cada estado está representado por una burbuja (Created, Started, Resumed, Paused y Stopped) y cada transición entre estados está representada por una flecha entre las burbujas (```onCreate()```, ```onStart()```, ```onResume()```, ```onRestart()```, ```onPause()```, ```onStop()``` y ```onDestroy()```)
 
 Los estados pueden ser de **transición** o **permanentes**. Un estado se considera de transición si sirve de pasaje entre un estado y otro, y se considera permanente si la aplicación puede permanecer un tiempo prolongado en ese estado.
 El diagrama se puede leer como una *pirámide de pasos*, donde los pasos para subir en la pirámide acercan más a la aplicación a un estado de ejecución en primer plano, y los pasos hacia abajo en la pirmide acercan a la aplicación a un estado fuera de memoria.
@@ -127,30 +127,12 @@ La comunicación por medio de Content Providers consta de dos partes:
 
 ### Intents
 
-Representan mensajes enviados entre aplicaciones.
+Un Intent es un objeto utilizado para enviar mensajes entre componentes Android, con el objetivo de requerir que se ejecuten acciones.
 
-Los intents permiten dos cosas:
+Existen tres casos de uso principales para un intent:
 
-1. Comunicar componentes entre sí
-2. Iniciar componentes.
-
-Cada componente que estudiamos antes (Activities, Services y BroadcastReceivers) son iniciados por Intents, salvo los ContentResolvers que son iniciados por ContentProviders.
-
-```java
-// De esta manera iniciamos una Activity
-Context.startActivity(Intent intent); 
-
-// O bien
-Activity.startActivityForResult(Intent intent, int RequestCode);
-
-// Para iniciar un service podemos utilizar el método
-Context.startService(Intent service)
-
-// Una aplicación puede iniciar un "broadcast" usando un "Intent"
-Context.sendBroadcast(Intent intent)
-Context.sendOrderedBroadcast()
-Context.sendStickyBroadcast() 
-```
+1. **Iniciar una activity.** Una activity representa una pantalla en una aplicación. Se puede iniciar una activity enviando un Intent al método ```startActivity()```
+2. **Iniciar un servicio.** Un servicio es un componente que ejecuta operaciones sin una interfaz de usuario. Se puede iniciar un servicio para efectuar una operación que se ejecute una única vez (como descargar un archivo) enviando un Intent al método ```startService()```
 
 ### Android manifest
 
