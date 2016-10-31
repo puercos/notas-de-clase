@@ -38,18 +38,17 @@ Cada aplicación en Android mantiene su propio proceso y puede tener multiples t
 3. Las aplicaciones pueden ser multithreading.
 4. Cada aplicación mantiene archivos privados que pueden también exportarse.
 
-## <a name="Ciclo-de-vida"></a>Ciclo de vida de aplicaciones Android 
+## <a name="Ciclo-de-vida"></a>Ciclo de vida de Activities en Android 
 
 ![Ciclo de vida en Android](../assets/android-001.png)
 
-El ciclo de vida de una aplicación en Android es un tema muy bien explicado por Google en su [documentación](https://developer.android.com/training/basics/activity-lifecycle/index.html). Lo que quiere decir este diagrama es que una aplicación en Android es manejada por una máquina de estados con funciones que se ejecutan en cada transición de estados. 
+Una [Activity](#Activities) es un componente en Android que representa una pantalla de la aplicación.
+El ciclo de vida de una activity en Android es un tema muy bien explicado por Google en su [documentación](https://developer.android.com/training/basics/activity-lifecycle/index.html). Lo que quiere decir este diagrama es que una activity en Android es manejada por una máquina de estados con funciones que se ejecutan en cada transición de estados. 
 
 Cada estado está representado por una burbuja (Created, Started, Resumed, Paused y Stopped) y cada transición entre estados está representada por una flecha entre las burbujas (```onCreate()```, ```onStart()```, ```onResume()```, ```onRestart()```, ```onPause()```, ```onStop()``` y ```onDestroy()```)
 
-Los estados pueden ser de **transición** o **permanentes**. Un estado se considera de transición si sirve de pasaje entre un estado y otro, y se considera permanente si la aplicación puede permanecer un tiempo prolongado en ese estado.
+Los estados pueden ser de **transición** o **permanentes**. Un estado se considera de transición si sirve de pasaje entre un estado y otro, y se considera permanente si la activity puede permanecer un tiempo prolongado en ese estado.
 El diagrama se puede leer como una *pirámide de pasos*, donde los pasos para subir en la pirámide acercan más a la aplicación a un estado de ejecución en primer plano, y los pasos hacia abajo en la pirmide acercan a la aplicación a un estado fuera de memoria.
-
-Así como una aplicación tiene una serie de estados y transiciones, el mismo ciclo de vida lo implementan las [Activities](#Activities), y es a través de estas que se explica el ciclo de vida de una aplicación.
 
 Entrando en detalle sobre estos conceptos, los estados del ciclo de vida de las activities en Android son los siguientes:
 
