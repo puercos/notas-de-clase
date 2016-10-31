@@ -34,11 +34,112 @@ Se introdujo memoria compartida y comunicación por barreras.
 
 ### Arquitecturas G80
 
-Incluye 
+![Arquitecturas G80 grafico](../assets/gpu-001.jpg)
 
+Incluyen 8 módulos de procesamiento paralelo que se llaman **TPC** y forman un **cluster** ya que todos ellos trabajan en conjunto. Los TPC son transparentes para el desarrollador y su manejo depende exclusivamente de la GPU.
+Los TPC contienen dos unidades cada uno llamadas SM (streaming units), que tienen memorias compartidas. 
+También contienen SP (Stream processors) que son la mínima unidad de la GPU que ejecuta instruccciones.
 
+### Arquitectura GT200 (SM+1 por TPC)
 
+Cada TPC tiene 3 SMs (Basicamente, tienen más procesadores). Los TPCs forman un cluster al igual que en el modelo anterior (G80) porque trabajan en conjunto
+Además de estas mejoras de hardware se introduce un nuevo concepto llamado **acceso coalesced**: Cada paquete de hilos que se ejecuta se llama **guard**. El acceso coalescen trae información para los hilos como paquetes de información consecutivas. No se trae un dato para cada hilo, sino que se trae un paquete de posiciones de memoria consecutivas de la cual se abastecen todos los hilos del guard.
 
+### Arquitecturas FERMI
 
+Se agrega una SM más (ahora son 4 SM por TPC), con 64 bits, lo que permite trabajar con punto flotante de doble precisión.
+**GIGA Thread engine + warp:** La ejecución de **Kernel** es en paralelo. 
+(Se considera Kernel en GPU al algoritmo que se va a ejecutar, y a la forma de organizar los hilos dentro del Kernel.)
+La arquitectura FERMI logra (teóricamente) casi 200.000 hilos de ejecución en paralelo.
 
+## División de memoria en GPU
 
+Hay dos tipos de memorias en GPU:
+
+1. **Interna**: Es rápida pero escasa
+2. **Externa**: Es lenta y amplia.
+
+Esta diferencia de velocidades en los accesos a las memorias se debe a que las memorias externas son compartidas entre distintos componentes, de modo que el acceso a ellas consta de más pasos, además de que se encuentra más alejada físicamente.
+
+Para compartir información entre los hilos se debe utilizar una memoria global, lo que implica una tardanza.
+
+### Memoria global
+
+* Unica a la que se puede acceder desde la CPU
+* La CPU carga los datos a procesar y luego obtiene los resultados
+* Cada thread obtiene inicialmente los datos de esta memoria
+* se encuentra en memoria on-board (Tarda más)
+* Es amplia
+
+### Memoria de registros
+
+* Es más rápida (Esta dentro de cada SP)
+* Es accedida privadamente por cada thread.
+* Es muy chica, y se debe optimizar por ese mismo motivo.
+
+### Memoria local
+
+* Es memoria externa
+* Es privada para cada hilo
+* Aquí se depositan los datos iniciales.
+
+### Memoria compartida
+
+* Puede ser accedida por todos los threads dentro de un mismo bloque
+* Es una caché
+* Se utiliza para compartir los datos entre threads del mismo bloque
+* No sirve si los threads pertenecen a distintos bloques
+* Alta velocidad de acceso.
+
+### Memoria de texturas
+
+* A diferencia de la memoria global, esta tiene un caché, para acceso optimizado.
+* Está al mismo nivel que la memoria global.
+
+## Programación multidimensional
+
+Se busca organizar los procesadores de la mejor manera según lo que se busca realizar.
+
+### Flujo de datos
+
+1. Desde la CPU se envían los datos a analizar al GPU
+2. El CPU conoce el algoritmo a ejecutar, así que eso hay que pasarlo a la GPU, para que aplique sobre los dats enviados en el paso [1]. Aquí se organiza multidimensionalmente la GPU, PARA CADA JUEGO DE DATOS. El algoritmo a ejecutar se llama **KERNEL**
+3. Los resultados se pasan de la GPU a la CPU.
+
+### Dimensiones
+
+Existen tres estructuras lógicas:
+
+1. **Hilo:** Es la mínima unidad lógica de ejecución.
+2. **Bloque:** Es un conjunto de hilos organizados de una forma determinada.
+3. **Grilla:** Es un conjunto de bloques organizados de una forma determinada.
+
+La jerarquía entonces queda:
+
+**Hilo - Bloque - Grilla**
+
+Grilla contiene bloques - Bloque contiene hilos.
+
+La GPU no maneja a los hilos en forma independiente, sino como conjuntos de bloques de hilos.
+
+Los bloques definen cómo se organizan sus hilos internamente. Esta organización puede ser:
+
+* **Bloques-thread (1D):** Cada hilo tiene un identificador, y el bloque organiza los hilos en forma de array unidimensional.
+* **Bloques-thread (2D):** El bloque organiza sus hilos en forma de matriz. En este caso, cada hilo se accede directamente con el identificador, y no hace falta recorrer toda la matriz hasta encontrar el hilo buscado.
+* **Bloques-thread (3D):** El bloque organiza sus hilos en forma de cubo tridimensional. El identificador en este caso tiene tres posiciones.
+
+Así como los bloques pueden organizar a sus hilos en una, dos o tres dimensiones, las grillas pueden organizar a sus bloques en una, dos o tres dimensiones.
+
+## Ejercicios
+
+// TERMINAR ESTO
+
+## No todo lo que brilla es oro (Problemas con la GPU)
+
+* Latencia de transferencia a memoria
+* Dependencia de la CPU. La CPU es un cuello de botella para la velocidad de la GPU, de modo que la GPU termina esperando a que la CPU le envie instrucciones y operandos desperdiciando tiempo.
+* Warp/Wavefront y condiciones.
+	* Hay que evitar lo mayor posible las decisiones en un kernel.
+	* Para evitarlo, se pueden armar dos hilos distintos, unos para la parte verdadera y otros para la parte falsa.
+* Profiler GPU.	
+	* Se puede inspeccionar la actividad interna del GPU.
