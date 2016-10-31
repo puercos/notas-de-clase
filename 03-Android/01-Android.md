@@ -1,12 +1,26 @@
 # Android - Resumen de teoría
 
-[TOC]
+* [Introducción.](#Introduccion)
+* [Requisitos.](#Requisitos)
+* [Aplicaciones.](#Aplicaciones)
+* [Ciclo de vida de aplicaciones Android.](#Ciclo-de-vida)
+* [Componentes esenciales de una aplicación.](#Componentes)
+    * [Activities.](#Activities)
+    * [Services.](#Services)
+    * [Broadcast Receivers.](#Broadcast-receivers)
+    * [Content Providers.](#Content-providers)
+    * [Intents.](#Intents)
+    * [Android Manifest](#Android-manifest)
+    * [Vistas.](#Vistas)
+* [Introducción a sensores](#Introduccion-a-sensores)
+* [Sistemas de coordenadas en sensores.](#Sistemas-de-coordenadas-en-sensores)
+* [Escuchando sensores.](#Escuchando-sensores) 
 
-## Introducción
+## <a name="Introduccion"></a>Introducción
 
 Android es un sistema operativo móvil construido y comercializado por Google en base a un Kernel Linux. El lenguaje de programación utilizado para desarrollar aplicaciones para Android es Java. Por lo tanto, el primer requisito para poder desarrollar en Android es el **JDK** (Java Development Kit). 
 
-## Requisitos
+## <a name="Requisitos">Requisitos
 
 Los elementos necesarios para desarrollar aplicaciones Android son los siguientes:
 
@@ -15,7 +29,7 @@ Los elementos necesarios para desarrollar aplicaciones Android son los siguiente
 * **IDE ([Android Studio o Eclipse](#AndroidStudioVSEclipse)):** Si bien no es necesario contar con un IDE (Integrated development environment, o entorno de desarrollo integrado), utilizar uno puede resultar muy útil. Para desarrollar en Android existen dos IDEs principales, Eclipse con ADT Bundle (que ya no recibe soporte por parte de Google), y Android Studio (IDE Oficial).
 * **Imagen de una versión Android:** La imagen de una versión Android es necesaria para desarrollar y probar las aplicaciones desarrolladas.
 
-## Aplicaciones
+## <a name="Aplicaciones"></a>Aplicaciones
 
 Cada aplicación en Android mantiene su propio proceso y puede tener multiples threads. Cada proceso tiene asignada su propia virtual machine (VM). Cada aplicación es asignada a un único "Linux user ID", y por defecto los archivos de una aplicación son solo visibles por esa aplicación pero pueden explicitamente exportarse a otras aplicaciones. Lo importante a notar aquí es que:
 
@@ -24,7 +38,7 @@ Cada aplicación en Android mantiene su propio proceso y puede tener multiples t
 3. Las aplicaciones pueden ser multithreading.
 4. Cada aplicación mantiene archivos privados que pueden también exportarse.
 
-## Ciclo de vida de aplicaciones Android 
+## <a name="Ciclo-de-vida"></a>Ciclo de vida de aplicaciones Android 
 
 ![Ciclo de vida en Android](../assets/android-001.png)
 
@@ -54,7 +68,7 @@ Las ventajas de implementar código propio al ejecutarse las transiciones de est
 * Se puede guardar el progreso del usuario para que la aplicación vuelva a estar activa en el mismo estado en que estaba antes de ser interrumpida.
 * La aplicación no va a *crashear* al rotarse el dispositivo.
 
-## Componentes esenciales de una aplicación
+## <a name="Componentes"></a>Componentes esenciales de una aplicación
 
 ### <a name="#Activities"></a> Activities
 
@@ -104,17 +118,17 @@ public class ExampleActivity extends Activity {
 }
 ```
 
-### Services
+### <a name="Services"></a>Services
 
 Los services son componentes que no tienen representación visual y se utilizan para realizar tareas en background.
 Dentro de una aplicación podríamos vincularnos con un servicio existente y controlar su eejcución.
 
-### Broadcast Receivers
+### <a name="Broadcast-receivers"></a>Broadcast Receivers
 
 Los BroadcastReceivers reciben y reaccionan a "broadcast announcements". La utilidad de los BroadcastReceivers es que permiten escuchar eventos del sistema. Por ejemplo, batería baja, etc.
 Al mismo tiempo, desde una aplicación también podemos crear broadcast announcements para que sean escuchados por otras aplicaciones.
 
-### Content Providers
+### <a name="Content-providers"></a>Content Providers
 
 Los ContentProviders permiten el intercambio de información entre aplicaciones.
 
@@ -125,7 +139,7 @@ La comunicación por medio de Content Providers consta de dos partes:
 * Un ContentProvider muestra información pública que puede ser accedida desde otra aplicación.
 * Un ContentResolver se utiliza desde otra aplicación para acceder a la información publicada por el ContentProvider de la primera aplicación.
 
-### Intents
+### <a name="Intents"></a>Intents
 
 Un Intent es un objeto utilizado para enviar mensajes entre componentes Android, con el objetivo de requerir que se ejecuten acciones.
 
@@ -143,7 +157,7 @@ Los intents pueden ser de dos tipos:
 
 2. **Implícitos.** Un intent implícito no nombra un componente específico sino que en cambio declaran una acción general a realizar, lo que permite a un componente de otra aplicación, manejarlo.
 
-### Android manifest
+### <a name="Android-manifest"></a>Android manifest
 
 El AndroidManifest es un archivo XML de configuración, cuyo objetivo principal es declarar los componentes al sistema Android.
 
@@ -179,7 +193,7 @@ Por ejemplo:
 </activity>
 ```
 
-### Vistas
+### <a name="Vistas"></a>Vistas
 
 **LAS VISTAS NO APARECEN EN LA PPT COMO UN COMPONENTE ESENCIAL**
 
@@ -191,7 +205,7 @@ Un **ViewGroup** es un contenedor de vistas que permite disponerlas en pantalla 
 * LinearLayout: organiza sus sub-vistas en forma lineal una debajo de la otra o una al lado de la otra en el orden en que fueron definidas.
 * RelativeLayout: organiza sus sub-vistas de manera relativa una con otra. Por ejemplo, podríamos definir un TextView que se dibuje debajo de otro TextView y un Button que se dibuje en el medio del Layout.
 
-## Introducción a sensores
+## <a name="Introduccion-a-sensores"></a>Introducción a sensores
 
 Los dispositivos Android tienen sensores que permiten obtener información del ambiente en tiempo real y con alta precisión.
 
@@ -203,7 +217,7 @@ Si clasificamos a los sensores por su funcionalidad, podemos dividirlos en:
 
 Es importante notar que no todos los sensores están disponibles en todos los dispositivos.
 
-## Sistemas de coordenadas en sensores
+## <a name="Sistemas-de-coordenadas-en-sensores"></a>Sistemas de coordenadas en sensores
 
 ![Sistemas de coordenadas en sensores](../assets/android-002.png)
 
@@ -211,7 +225,7 @@ En general, el framework de los sensores, utiliza un sistema de coordenadas est�
 
 Para la mayoría de los dispositivos, el sistema de coordenadas, es definido relativo a la posición de la pantalla cuando el dispositivo es sostenido en la posición por defecto 
 
-## Escuchando sensores
+## <a name="Escuchando-sensores"></a>Escuchando sensores
 
 Para recibir notificaciones de eventos ocurridos, se debe implementar la interfaz ```SensorEventListener```.
 
@@ -228,5 +242,3 @@ Para recibir un nuevo valor medido por el sensor, se debe implementar ```onSenso
 2. Sensor que detectó el cambio
 3. Marca de tiempo del evento
 4. Datos de la medición.
-
-## <a name="#AndroidStudioVSEclipse"></a>Android Studio vs eclipse
